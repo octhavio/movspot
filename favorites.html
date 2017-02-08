@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Movspot</title>
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="icon" href="http://movspot.com/img/favicon.png">
+
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+
+    <!-- CSS   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+    <link href="http://movspot.com/styles.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/live/0.4/firebase-ui-auth.css" />
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js?version=2"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js?version=2"></script>
+    <script src="https://www.gstatic.com/firebasejs/ui/live/0.4/firebase-ui-auth.js?version=2"></script>
+    <script src="http://movspot.com/js/global.js?version=2"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB47zhou7qRuV8MvKsTDW60tPr5CXgxH3g"></script>
+
+
+
+</head>
+<body class="background-light-gray">
+  <!-- Navbar -->
+  <header>
+      <nav class="navbar navbar-default navbar-fixed-top">
+          <div class="container container-fluid navbar-space">
+              <div class="navbar-header">
+                  <label class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                      <span class="sr-only">Toggle navigation</span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                  </label>
+                  <div class="navbar-header">
+                      <a class="logo" href="http://movspot.com/">
+                          <img class="logo" src="http://movspot.com/img/logo.svg" alt="logo"></a>
+                  </div>
+              </div>
+              <form class="navbar-form pull-right" role="search" id="search-form">
+                  <div class="input-group">
+                      <input type="text" class="form-control" placeholder="Pesquisar..." id="search-field">
+                      <span class="input-group-btn">
+                <button type="submit" class="btn btn-default" id="search-button">
+                  <span class="glyphicon glyphicon-search">
+                    <span class="sr-only">Pesquisar...</span>
+                      </span>
+                      </button>
+                      </span>
+                  </div>
+              </form>
+              <div id="loggedcontainer" style="display:none;" class="nav navbar-nav navbar-right">
+                <li class="user-name" id="username">Usuário</li>
+                <img src="img/profile.png" class="img-rounded" id="userpic" alt="Cinque Terre" width="35" height="35" style="border-radius:999px; border:2px solid #353E47;">
+                <a href="#" onclick="userLogout()" style="margin-right:8px;">
+                  <span class="glyphicon glyphicon-log-out" alt="logout">
+                  </a>
+                </div>
+
+              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                  <ul class="nav navbar-nav navbar-right hidden-xs">
+                      <li class="Login" id="logindropdown">
+                          <a href="#" class="navbar-links dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">login <span class="caret"></span></a>
+                          <ul class="dropdown-menu">
+                              <div class="navbar-right" id="">
+                                  <button class="loginBtn loginBtn--google loginbtn" onclick="googleLogin()" style="" id="googleloginbtn">Google</button>
+                                  <button class="loginBtn loginBtn--facebook loginbtn" onclick="facebookLogin()" style="" id="facebookloginbtn">Facebook</button>
+                              </div>
+                          </ul>
+                      </li>
+                  </ul>
+                  <ul class="nav navbar-nav navbar-right hidden-lg hidden-md hidden-sm ">
+                      <div class="navbar-right" id="">
+                          <button class="loginBtn loginBtn--google loginbtn" onclick="googleLogin()" style="" id="googleloginbtn">Google</button>
+                          <button class="loginBtn loginBtn--facebook loginbtn" onclick="facebookLogin()" style="" id="facebookloginbtn">Facebook</button>
+                      </div>
+                  </ul>
+                  <ul class="nav navbar-nav navbar-left">
+                      <li><a class="navbar-links" href="http://movspot.com/">home</a></li>
+                      <li><a class="navbar-links" href="http://movspot.com/favorites">favoritos</a></li>
+                  </ul>
+              </div>
+          </div>
+      </nav>
+  </header>
+
+
+    <!-- JUMBOTRON -->
+    <section class="container-movie-information" style="margin-top: 3em;">
+      <div class="container" style="padding:0;">
+        <div class="row ">
+          <div class="" style="margin-left:30px; margin-right:30px">
+            <div class="section-movie-information">
+
+              <div class="col-sm-9 col-xs-12">
+                <h1 class="header-title">Meus favoritos<span class="glyphicon glyphicon-star btn-lg" style="color:#FFAD14;" aria-hidden="true"></span></h1>
+                <p class="descricao">Aqui estão todas as suas cenas favoritas.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    </section>
+
+<!-- MOSAICO DE CARDS -->
+<div class="container container-posts">
+    <div class="row">
+        <div class="col-md-12 padding-0" id="messagecontainer" style="padding-bottom:30px;">    <h2 id="nofavsmsg" style="display:none;margin-top:50px;margin-bottom:190px;">Você ainda não possui nenhum favorito. Entre em algum filme e adicione uma cena ao favorito para vê-la nessa página.</h2>
+              <h2 id="notloggedmsg" style="display:none;margin-top:50px;margin-bottom:190px;">Você não conectou o MovSpot com sua rede social. Favor clicar em Login na barra de navegação e escolher entre login com conta Google ou Facebook.</h2></div>
+
+        <div class="col-md-12 padding-0" id="scenelist" style="padding-bottom:30px;">
+
+            <!--<div class="col-sm-12">
+                <div class="block">
+                  <h1>Senhor dos Anéis</h1>
+                    <h2>Condado dos Hobbits</h2>
+                    <h2 class="address">114 West Street - New York, NY 10080, EUA</h2>
+                    <a href="#" class="favorite" style="display:none;">adicionar aos favoritos  <span class="glyphicon glyphicon-star" aria-hidden="true"></span></a>
+                    <a href="#" class="favorite-remove">remover dos favoritos  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    <div class="image-post"></div>
+                </div>
+                <article class="col-md-4 col-sm-4 col-xs-12" id="card1">
+                    <div class="movie-scene-container">
+                        <img class="layer" src="img/scene-movie.jpg">
+                    </div>
+                </article>
+                <article class="col-md-4 col-sm-4 col-xs-12" id="card1">
+                    <div class="movie-scene-container">
+                        <img class="layer" src="img/scene-movie.jpg">
+                    </div>
+                </article>
+                <article class="col-md-4 col-sm-4 col-xs-12" id="card1">
+                    <div class="movie-scene-container">
+                        <img class="layer" src="img/scene-movie.jpg">
+                    </div>
+                </article>
+            </div>-->
+
+        </div>
+    </div>
+</div>
+
+
+
+
+    <!-- Modal -->
+    <div id="loginModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Entre com sua conta</h4>
+          </div>
+          <div class="modal-body">
+            <p>Você não está logado. Conecte-se através do seu Facebook ou Google para acessar essa função</p>
+            <button class="loginBtn loginBtn--google loginbtn" onclick="googleLogin()" style="" id="googleloginbtn">Google</button>
+            <button class="loginBtn loginBtn--facebook loginbtn" onclick="facebookLogin()" style="" id="facebookloginbtn">Facebook</button>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <footer>
+      <div class="container">
+        <hr>
+        <div class="col-sm-12 col-centered">
+          <div class="col-md-2 col-sm-10 col-xs-12" style="text-align: left; margin-bottom:20px;">
+              <img src="http://movspot.com/img/logo-footer.svg" alt="" />
+          </div>
+            <div class="col-md-10 col-sm-10 col-xs-12">
+                <h6 class="footer-description">Uma plataforma que reúne as cenas mais marcantes dos filmes e mostra o local exato onde elas foram gravadas. Viaje pelo mundo com esse guia de cinema que coloca você dentro de suas obras favoritas. </h6>
+            </div>
+            </div>
+    </footer>
+
+    <script src="http://movspot.com/js/search.js?version=2"></script>
+      <script src="http://movspot.com/js/favorites.js?version=2"></script>
+        <script src="http://movspot.com/js/favspage.js?version=2"></script>
+
+
+
+
+    <script type="text/javascript"  src="//cdn-main.123contactform.com/includes/tinybox/tinybox.js.minified.js?0d2e4dc"></script>
+
+    <link href="//www.123contactform.com/includes/tinybox/tinyboxstyle.css.minified.css?0d2e4dc" rel="stylesheet" type="text/css"  />
+    <a href="javascript:"  style="display:scroll;z-index:10;position:fixed;bottom:210px;right:2px;" onclick="var tinybox_width = window.innerWidth || document.documentElement.clientWidth; tinybox_width=Math.round(tinybox_width*0.6);TINY.box.show({iframe:'http://www.123contactform.com/form-2232326/Formulario-De-Contato-Leads',boxid:'frameless',width:tinybox_width,height:500,fixed:false,maskid:'bluemask',maskopacity:40})"><img border="0" src="http://www.123contactform.com/verticalbutton2.php?&bg=353E47&fnt=FFFFFF&pos=2&text=Entre em contato&font=arialblk"></a>
+
+
+</body>
+
+</html>

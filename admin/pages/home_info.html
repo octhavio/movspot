@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Movspot - Painel Administrativo</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Timeline CSS -->
+    <link href="../dist/css/timeline.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="../bower_components/morrisjs/morris.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js?version=2"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js?version=2"></script>
+    <![endif]-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js?version=2"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js?version=2"></script>
+
+
+    <script src="https://www.gstatic.com/firebasejs/ui/live/0.4/firebase-ui-auth.js?version=2"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/live/0.4/firebase-ui-auth.css" />
+
+
+
+<script src="../js/admin_global.js?version=2"></script>
+
+
+
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Movspot - Painel Administrativo</a>
+
+                <div style="position:absolute; right:15px; top:15px;">
+
+                  <button class="loginBtn loginBtn--google loginbtn" onclick="googleLogin()" style="" id="googleloginbtn">Google</button>
+                  <button class="loginBtn loginBtn--facebook loginbtn" onclick="facebookLogin()" style="" id="facebookloginbtn">Facebook</button>
+                  <div id="loggedcontainer" style="display:none;">
+                  <a href="#" onclick="userLogout()" style="margin-right:8px;"><img src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRF89xPgHDaPy7PXFBvSm_-EUO8tbKBbpFNtF4CDtA8uJgmqZlqbA" width="20" alt="logout"></a><span style="font-family:Roboto;
+                  font-size: 18px;
+                  font-weight: 400;
+                  letter-spacing: 0.25px; margin-right:8px;" id="username">Nome</span><img src="" class="img-rounded" id="userpic" alt="Cinque Terre" width="35" height="35" style="border-radius:999px; border:2px solid #353E47;"></div>
+
+
+
+                </div>
+
+
+
+
+
+            </div>
+            <!-- /.navbar-header -->
+
+
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                  <ul class="nav" id="side-menu">
+
+                    <li>
+                        <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="home_info.html"><i class="fa fa-desktop fa-fw"></i> Informações da Home</a>
+                    </li>
+                    <li>
+                        <a href="add_movie.html"><i class="fa fa-film fa-fw"></i> Adicionar filmes</a>
+                    </li>
+                    <li>
+                        <a href="add_scene.html"><i class="fa fa-camera-retro fa-fw"></i> Adicionar cenas</a>
+                    </li>
+
+                    <li>
+                        <a href="users.html"><i class="fa fa-user fa-fw"></i> Usuários</a>
+                    </li>
+
+
+                    <li>
+                        <a href="movie_list.html"><i class="fa fa-film fa-fw"></i> Lista de filmes</a>
+                    </li>
+                    <li>
+                        <a href="scene_list.html"><i class="fa fa-film fa-fw"></i> Lista de cenas</a>
+                    </li>
+
+                  </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="page-wrapper">
+
+
+<!-- LazyJaxDavis start -->
+
+
+
+            <div class="container-fluid" style="min-height:650px">
+
+                <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            Home <small>alterar informações da página principal</small>
+                        </h1>
+                        <div class="col-sm-12">
+                          <h4 id="msg" style="color:darkgreen;"></h4>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row -->
+
+
+<form class="form-horizontal" role="form" id="homeinfoform">
+
+  <!--
+
+<h2>Informações do cabeçalho</h2><hr>
+  <div class="row">
+                      <div class="col-sm-12">
+                        <div class="form-group">
+                          <div class="col-xs-2">
+                            <label class="form-label" for="header-picture" required>Imagem do cabeçalho<span style="color:red">*</span></label></div>
+                          <div class="col-xs-10">
+                            <input type="file" id="movie-picture" name="movie-picture" accept="image/*" onchange="PreviewImage1();"><br>  <img id="headerUploadPreview" style="width: 500px; height: 200px;" />
+                          <h5 id="header-msg"></h5>
+                            <script type="text/javascript">
+
+                                function PreviewImage1() {
+                                    var oFReader = new FileReader();
+                                    oFReader.readAsDataURL(document.getElementById("movie-picture").files[0]);
+
+                                    oFReader.onload = function (oFREvent) {
+                                        document.getElementById("headerUploadPreview").src = oFREvent.target.result;
+                                    };
+                                };
+
+                            </script>
+                          </div>
+                        </div>
+                      </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                          <div class="col-xs-2">
+                            <label class="form-label" for="cta-text" required>Texto do banner<span style="color:red">*</span></label></div>
+                          <div class="col-xs-10">
+                            <input type="text" class="form-control input-max-width" name="cta-text" id="cta-text">
+                          </div>
+                        </div>
+                      </div></div-->
+
+
+
+                      <h2>Informações das cidade em destaque</h2><hr>
+                        <div class="row">
+                      <div class="col-sm-12">
+                        <div class="form-group">
+                          <div class="col-xs-2">
+                            <label class="form-label" for="city1" required>Cidade 1<span style="color:red">*</span></label></div>
+                          <div class="col-xs-10">
+                            <input type="text" class="form-control input-max-width" name="city1" id="city1">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-12">
+                        <div class="form-group">
+                          <div class="col-xs-2">
+                            <label class="form-label" for="city1-picture" required>Imagem cidade 1<span style="color:red">*</span></label></div>
+                          <div class="col-xs-10">
+                            <input type="file" id="city1-picture" name="city1-picture" accept="image/*" onchange="PreviewImage1();"><br>  <img id="city1UploadPreview" style="width: 200px; height: 200px;" />
+                          <h5 id="city1-msg"></h5>
+                            <script type="text/javascript">
+
+                                function PreviewImage1() {
+                                    var oFReader = new FileReader();
+                                    oFReader.readAsDataURL(document.getElementById("city1-picture").files[0]);
+
+                                    oFReader.onload = function (oFREvent) {
+                                        document.getElementById("city1UploadPreview").src = oFREvent.target.result;
+                                    };
+                                };
+
+                            </script>
+                          </div>
+                        </div>
+                      </div>
+
+
+
+
+                      <div class="col-sm-12">
+                        <div class="form-group">
+                          <div class="col-xs-2">
+                            <label class="form-label" for="city2" required>Cidade 2<span style="color:red">*</span></label></div>
+                          <div class="col-xs-10">
+                            <input type="text" class="form-control input-max-width" name="city2" id="city2">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-12">
+                        <div class="form-group">
+                          <div class="col-xs-2">
+                            <label class="form-label" for="city2-picture" required>Imagem cidade 2<span style="color:red">*</span></label></div>
+                          <div class="col-xs-10">
+                            <input type="file" id="city2-picture" name="city2-picture" accept="image/*" onchange="PreviewImage2();"><br>  <img id="city2UploadPreview" style="width: 200px; height: 200px;" />
+                          <h5 id="city2-msg"></h5>
+                            <script type="text/javascript">
+
+                                function PreviewImage2() {
+                                    var oFReader = new FileReader();
+                                    oFReader.readAsDataURL(document.getElementById("city2-picture").files[0]);
+
+                                    oFReader.onload = function (oFREvent) {
+                                        document.getElementById("city2UploadPreview").src = oFREvent.target.result;
+                                    };
+                                };
+
+                            </script>
+                          </div>
+                        </div>
+                      </div>
+
+
+
+
+
+                                            <div class="col-sm-12">
+                                              <div class="form-group">
+                                                <div class="col-xs-2">
+                                                  <label class="form-label" for="city3" required>Cidade 3<span style="color:red">*</span></label></div>
+                                                <div class="col-xs-10">
+                                                  <input type="text" class="form-control input-max-width" name="city3" id="city3">
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                              <div class="form-group">
+                                                <div class="col-xs-2">
+                                                  <label class="form-label" for="city3-picture" required>Imagem cidade 3<span style="color:red">*</span></label></div>
+                                                <div class="col-xs-10">
+                                                  <input type="file" id="city3-picture" name="city3-picture" accept="image/*" onchange="PreviewImage3();"><br>  <img id="city3UploadPreview" style="width: 200px; height: 200px;" />
+                                                <h5 id="city3-msg"></h5>
+                                                  <script type="text/javascript">
+
+                                                      function PreviewImage3() {
+                                                          var oFReader = new FileReader();
+                                                          oFReader.readAsDataURL(document.getElementById("city3-picture").files[0]);
+
+                                                          oFReader.onload = function (oFREvent) {
+                                                              document.getElementById("city3UploadPreview").src = oFREvent.target.result;
+                                                          };
+                                                      };
+
+                                                  </script>
+                                                </div>
+                                              </div>
+                                            </div>  </div>
+
+
+
+
+                                                                  <h2>Informações dos filmes em destaque</h2><hr>
+  <div class="row">
+
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <div class="col-xs-2">
+                            <label class="form-label" for="movie1-id" required>ID filme 1<span style="color:red">*</span></label></div>
+                          <div class="col-xs-10">
+                            <input type="text" class="form-control input-max-width" name="movie1-id" id="movie1-id">
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <div class="col-xs-2">
+                            <label class="form-label" for="movie2-id" required>ID filme 2<span style="color:red">*</span></label></div>
+                          <div class="col-xs-10">
+                            <input type="text" class="form-control input-max-width" name="movie2-id" id="movie2-id">
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <div class="col-xs-2">
+                            <label class="form-label" for="movie3-id" required>ID filme 3<span style="color:red">*</span></label></div>
+                          <div class="col-xs-10">
+                            <input type="text" class="form-control input-max-width" name="movie3-id" id="movie3-id">
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <div class="col-xs-2">
+                            <label class="form-label" for="movie4-id" required>ID filme 4<span style="color:red">*</span></label></div>
+                          <div class="col-xs-10">
+                            <input type="text" class="form-control input-max-width" name="movie4-id" id="movie4-id">
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <div class="col-xs-2">
+                            <label class="form-label" for="movie5-id" required>ID filme 5<span style="color:red">*</span></label></div>
+                          <div class="col-xs-10">
+                            <input type="text" class="form-control input-max-width" name="movie5-id" id="movie5-id">
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <div class="col-xs-2">
+                            <label class="form-label" for="movie6-id" required>ID filme 6<span style="color:red">*</span></label></div>
+                          <div class="col-xs-10">
+                            <input type="text" class="form-control input-max-width" name="movie6-id" id="movie6-id">
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <div class="col-xs-2">
+                            <label class="form-label" for="movie7-id" required>ID filme 7<span style="color:red">*</span></label></div>
+                          <div class="col-xs-10">
+                            <input type="text" class="form-control input-max-width" name="movie7-id" id="movie7-id">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <div class="col-xs-2">
+                            <label class="form-label" for="movie8-id" required>ID filme 8<span style="color:red">*</span></label></div>
+                          <div class="col-xs-10">
+                            <input type="text" class="form-control input-max-width" name="movie8-id" id="movie8-id">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <div class="col-xs-2">
+                            <label class="form-label" for="movie9-id" required>ID filme 9<span style="color:red">*</span></label></div>
+                          <div class="col-xs-10">
+                            <input type="text" class="form-control input-max-width" name="movie9-id" id="movie9-id">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <div class="col-xs-2">
+                            <label class="form-label" for="movie10-id" required>ID filme 10<span style="color:red">*</span></label></div>
+                          <div class="col-xs-10">
+                            <input type="text" class="form-control input-max-width" name="movie10-id" id="movie10-id">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <div class="col-xs-2">
+                            <label class="form-label" for="movie11-id" required>ID filme 11<span style="color:red">*</span></label></div>
+                          <div class="col-xs-10">
+                            <input type="text" class="form-control input-max-width" name="movie11-id" id="movie11-id">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <div class="col-xs-2">
+                            <label class="form-label" for="movie12-id" required>ID filme 12<span style="color:red">*</span></label></div>
+                          <div class="col-xs-10">
+                            <input type="text" class="form-control input-max-width" name="movie12-id" id="movie12-id">
+                          </div>
+                        </div>
+                      </div>
+
+
+
+
+                      </div>
+  <div class="row">
+
+
+                      <div class="col-sm-12">
+                        <button class="btn btn-lg btn-primary" type="submit">Enviar</button>
+                      </div>
+
+
+
+                    </div>
+
+    </form>
+
+
+
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+
+
+
+
+
+
+    <!-- jQuery -->
+    <script src="../bower_components/jquery/dist/jquery.min.js?version=2"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js?version=2"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../bower_components/metisMenu/dist/metisMenu.min.js?version=2"></script>
+
+    <!-- Morris Charts JavaScript
+    <script src="../bower_components/raphael/raphael-min.js?version=2"></script>
+    <script src="../bower_components/morrisjs/morris.min.js?version=2"></script>
+    <script src="../js/morris-data.js?version=2"></script>-->
+
+
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../dist/js/sb-admin-2.js?version=2"></script>
+
+
+
+    <script src="../js/homeinfopage.js?version=2"></script>
+     <script src="../js/checkadmin.js?version=2"></script>
+
+</body>
+
+</html>

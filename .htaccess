@@ -1,0 +1,6 @@
+RewriteEngine On
+RewriteRule   ^favorites favorites.html
+RewriteRule   search/(.*) search.html
+RewriteRule   movies/(.*) movie.html
+RewriteRule   admin/movie/edit/(.*) admin/pages/edit_movie.html
+RewriteRule   admin/scene/edit/(.*)/(.*) admin/pages/edit_scene.html
